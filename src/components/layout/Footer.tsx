@@ -2,9 +2,8 @@ import { favicon } from "@/assets"
 
 export default function Footer() {
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Projects", href: "#projects" },
+    { name: "Resume Builder", href: "https://open-resume-builder.vercel.app/" },
+    { name: "Meta Data Tester", href: "https://metatester.vercel.app/" },
   ]
 
   return (

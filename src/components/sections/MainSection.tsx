@@ -5,7 +5,7 @@ import { Card, CardContent } from "../ui/card"
 
 const MainSection = () => {
     return (
-        <main className="min-h-screen bg-gradient-to-b from-background to-muted">
+        <main className="min-h-screen bg-gradient-to-b from-background to-muted mt-12">
       <div className="container mx-auto py-8 px-4">
         <header className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
