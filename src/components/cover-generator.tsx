@@ -21,6 +21,7 @@ export default function CoverGenerator() {
   const [selectedTemplate, setSelectedTemplate] = useState<Template>(templates[0])
   const [selectedPalette, setSelectedPalette] = useState<ColorPalette>(colorPalettes[0])
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>(platforms[0])
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [html2canvas, setHtml2canvas] = useState<any>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -90,8 +91,9 @@ export default function CoverGenerator() {
 
     const reader = new FileReader()
     reader.onload = (event) => {
-      if (event.target?.result) {
-        setUserData((prev) => ({ ...prev, profileImage: event.target.result as string }))
+      const result = event.target?.result
+      if (result) {
+        setUserData((prev) => ({ ...prev, profileImage: result as string }))
       }
     }
     reader.readAsDataURL(file)
