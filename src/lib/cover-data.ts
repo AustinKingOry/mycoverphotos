@@ -1,11 +1,11 @@
 import type { UserData, Template, ColorPalette, Platform } from "./types"
 
 export const defaultUserData: UserData = {
-  headline: "Building Technology to Bridge Gaps & Create Opportunities",
-  subheadline: "Innovating at the intersection of education and technology",
-  company: "Founder & CTO | Campoprime Labs",
-  profileImage: "",
-  name: "",
+  headline: "Crafting Solutions, One Line of Code at a Time", 
+  subheadline: "Passionate about building scalable and efficient digital experiences", 
+  company: "Software Engineer | Tech Innovators Inc.", 
+  profileImage: "", // Placeholder before user uploads an image
+  name: "Alex Johnson", 
 }
 
 export const templates: Template[] = [
