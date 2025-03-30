@@ -9,12 +9,10 @@ export default function Template1({ userData, palette }: TemplateProps) {
   const [primary, secondary, accent, background, text] = palette.colors
 
   return (
-    <div
-      className="w-full h-full relative overflow-hidden"
+    <div className="w-full h-full relative overflow-hidden"
       style={{
         background: `linear-gradient(to right, ${background}, ${background})`,
-      }}
-    >
+      }}>
       {/* Animated particle background */}
       <div className="absolute inset-0">
         {Array.from({ length: 50 }).map((_, i) => (
@@ -174,7 +172,7 @@ export default function Template1({ userData, palette }: TemplateProps) {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style jsx>{`
         @keyframes pulse {
           0% { transform: scale(1); opacity: 0.1; }
           100% { transform: scale(1.5); opacity: 0.3; }
