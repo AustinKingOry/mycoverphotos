@@ -16,8 +16,8 @@ export default function ColorPaletteGallery({
   palettes,
   selectedPalette,
   onSelect,
-  defaultData,
-  defaultTemplate,
+  // defaultData,
+  // defaultTemplate,
 }: ColorPaletteGalleryProps) {
   return (
     <ScrollArea className="h-[500px] pr-4">
