@@ -7,7 +7,8 @@ interface TemplateProps {
 }
 
 export default function Template7({ userData, palette }: TemplateProps) {
-  const [primary, secondary, accent, background, text] = palette.colors
+  // const [primary, secondary, accent, background, text] = palette.colors
+  const [primary, secondary] = palette.colors
 
   return (
     <div
