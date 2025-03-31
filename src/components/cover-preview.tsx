@@ -1,4 +1,3 @@
-"use client"
 import { forwardRef } from "react"
 import type { UserData, Template, ColorPalette, Platform } from "@/lib/types"
 import Template1 from "@/components/templates/template-1"

@@ -1,4 +1,3 @@
-"use client"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { Platform } from "@/lib/types"
 

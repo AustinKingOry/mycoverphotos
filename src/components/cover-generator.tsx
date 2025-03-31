@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useState, useRef } from "react"
 import type React from "react"
 
@@ -26,6 +25,8 @@ export default function CoverGenerator() {
   const [isGenerating, setIsGenerating] = useState(false)
   const previewRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
+
+  const isLoaded = useRef(false); // 🔹 Prevents overwriting on first render
 
   // Load user data from localStorage on initial render
   useEffect(() => {
@@ -56,6 +57,7 @@ export default function CoverGenerator() {
         const platform = platforms.find((p) => p.id === platformId)
         if (platform) setSelectedPlatform(platform)
       }
+      isLoaded.current = true; // ✅ Data is now loaded
     } catch (error) {
       console.error("Error loading saved data:", error)
     }
@@ -63,14 +65,20 @@ export default function CoverGenerator() {
 
   // Save user data to localStorage whenever it changes
   useEffect(() => {
-    try {
-      localStorage.setItem("coverGeneratorUserData", JSON.stringify(userData))
-      localStorage.setItem("coverGeneratorTemplate", JSON.stringify(selectedTemplate.id))
-      localStorage.setItem("coverGeneratorPalette", JSON.stringify(selectedPalette.id))
-      localStorage.setItem("coverGeneratorPlatform", JSON.stringify(selectedPlatform.id))
-    } catch (error) {
-      console.error("Error saving data:", error)
-    }
+    if (!isLoaded.current) return; // ✅ Prevents overwriting on initial render
+    const saveData = () => {
+      try {
+        localStorage.setItem("coverGeneratorUserData", JSON.stringify(userData))
+        localStorage.setItem("coverGeneratorTemplate", JSON.stringify(selectedTemplate.id))
+        localStorage.setItem("coverGeneratorPalette", JSON.stringify(selectedPalette.id))
+        localStorage.setItem("coverGeneratorPlatform", JSON.stringify(selectedPlatform.id))
+      } catch (error) {
+        console.error("Error saving data:", error)
+      }
+    };
+    
+    const timeout = setTimeout(saveData, 500); // 🔹 Debounce for 500ms
+    return () => clearTimeout(timeout);
   }, [userData, selectedTemplate, selectedPalette, selectedPlatform])
 
   // Load html2canvas dynamically
@@ -111,65 +119,102 @@ export default function CoverGenerator() {
   }
 
   const handleDownload = async () => {
-    if (!html2canvas || !previewRef.current) return
-
-    setIsGenerating(true)
-
+    if (!html2canvas || !previewRef.current) return;
+  
+    setIsGenerating(true);
+  
     try {
-      // Create a temporary container with exact dimensions
-      const tempContainer = document.createElement("div")
-      tempContainer.style.width = `${selectedPlatform.width}px`
-      tempContainer.style.height = `${selectedPlatform.height}px`
-      tempContainer.style.position = "absolute"
-      tempContainer.style.left = "-9999px"
-      tempContainer.style.top = "-9999px"
-      tempContainer.style.overflow = "hidden"
-
+      // Ensure previewRef exists
+      if (!previewRef.current) {
+        console.error("previewRef is null");
+        return;
+      }
+  
+      // Log Original Content
+      // console.log("Original HTML:", previewRef.current.innerHTML);
+  
       // Clone the preview content
-      const clone = previewRef.current.cloneNode(true) as HTMLElement
-      clone.style.width = "100%"
-      clone.style.height = "100%"
-
-      // Add to DOM temporarily
-      tempContainer.appendChild(clone)
-      document.body.appendChild(tempContainer)
-
+      const clone = previewRef.current.cloneNode(true) as HTMLElement;
+      clone.style.width = `${selectedPlatform.width}px`;
+      clone.style.height = `${selectedPlatform.height}px`;
+      clone.style.backgroundColor = "#ffffff"; // Ensure background is not transparent  
+      // Force visibility
+      clone.style.display = "block";
+      clone.style.position = "absolute";
+      clone.style.left = "0";
+      clone.style.top = "0";
+      clone.style.opacity = "1";
+      clone.style.margin = "0";
+      clone.style.padding = "0";
+      clone.style.border = "none";
+      clone.style.boxShadow = "none";
+      clone.style.outline = "none";
+      clone.style.transform = "translate(0, 0)";
+      clone.style.overflow = "hidden";
+      clone.style.width = `100%`;
+      clone.style.height = `100%`;
+      clone.style.maxWidth = `${selectedPlatform.width}px`;
+      clone.style.maxHeight = `${selectedPlatform.height}px`;
+      // Log Cloned Content
+      // console.log("Cloned HTML:", clone.innerHTML);
+      document.body.appendChild(clone);
+  
+      // Fix CORS issues for images
+      clone.querySelectorAll("img").forEach((img) => {
+        img.setAttribute("crossOrigin", "anonymous");
+      });
+  
+      // Add delay before capturing
+      await new Promise((resolve) => setTimeout(resolve, 500));
+  
       // Capture with html2canvas
-      const canvas = await html2canvas(tempContainer, {
-        scale: 2, // Higher scale for better quality
-        logging: false,
+      const canvas = await html2canvas(clone, {
+        scale: 3,
         useCORS: true,
-        allowTaint: true,
-        backgroundColor: null,
-      })
-
-      // Remove temporary elements
-      document.body.removeChild(tempContainer)
-
-      // Convert canvas to a data URL
-      const dataUrl = canvas.toDataURL("image/png")
-
-      // Create download link
-      const link = document.createElement("a")
-      link.download = `${selectedPlatform.id}-cover-${selectedTemplate.id}.png`
-      link.href = dataUrl
-      link.click()
-
-      toast({
-        title: "Success!",
-        description: "Your cover image has been downloaded.",
-      })
+        foreignObjectRendering: true,
+        backgroundColor: "#ffffff",
+        x: 0, // Force correct positioning
+        y: 0,
+      });
+  
+      document.body.removeChild(clone); // Remove from DOM
+  
+      if (!canvas) {
+        console.error("Canvas generation failed.");
+        return;
+      }
+  
+      // Convert to Blob for download
+      canvas.toBlob((blob: Blob | MediaSource) => {
+        if (!blob) {
+          console.error("Blob conversion failed.");
+          return;
+        }
+  
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${selectedPlatform.id}-cover-${selectedTemplate.id}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+  
+        toast({
+          title: "Success!",
+          description: "Your cover image has been downloaded.",
+        });
+      }, "image/png");
+  
     } catch (error) {
-      console.error("Error generating image:", error)
+      console.error("Error generating image:", error);
       toast({
         title: "Error",
         description: "There was an error generating the image. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsGenerating(false)
+      setIsGenerating(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-8">
