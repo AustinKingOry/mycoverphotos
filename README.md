@@ -1,54 +1,44 @@
-# React + TypeScript + Vite
+# MyCoverPhotos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional cover image generator for social media platforms built with React and Vite.
 
-Currently, two official plugins are available:
+![MyCoverPhotos Screenshot](https://mycoverphotos.vercel.app/default.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📋 Overview
 
-## Expanding the ESLint configuration
+MyCoverPhotos is a web application that allows users to create professional, eye-catching cover images for various social media platforms. Users can choose from multiple templates, customize colors and text, add their profile picture, and download high-quality images in the correct dimensions for each platform.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- 10+ professional design templates
+- Multiple color palettes to choose from
+- Platform-specific dimensions (LinkedIn, Facebook, Twitter/X, YouTube, etc.)
+- Profile picture upload and integration
+- Custom text fields (headline, subheadline, name, company/position)
+- Real-time preview
+- One-click download in the correct dimensions
+- Automatic saving of preferences in local storage
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **React** - UI library
+- **Vite** - Build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Component library
+- **html2canvas** - For converting DOM elements to canvas for download
+- **Geist Font** - Typography
+- **Lucide React** - Icon library
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/AustinKingOry/mycoverphotos.git
+cd mycoverphotos
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+
