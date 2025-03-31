@@ -361,7 +361,7 @@ export default function CoverGenerator() {
                   name="headline"
                   value={userData.headline}
                   onChange={handleInputChange}
-                  placeholder="Building Technology to Bridge Gaps"
+                  placeholder={defaultUserData.headline}
                   className="border-input/60 focus-visible:ring-primary"
                 />
               </div>
@@ -375,7 +375,7 @@ export default function CoverGenerator() {
                   name="name"
                   value={userData.name || ""}
                   onChange={handleInputChange}
-                  placeholder="John Doe"
+                  placeholder={defaultUserData.name}
                   className="border-input/60 focus-visible:ring-primary"
                 />
               </div>
@@ -389,7 +389,7 @@ export default function CoverGenerator() {
                   name="subheadline"
                   value={userData.subheadline}
                   onChange={handleInputChange}
-                  placeholder="Innovating at the intersection of education and technology"
+                  placeholder={defaultUserData.subheadline}
                   className="border-input/60 focus-visible:ring-primary"
                 />
               </div>
@@ -403,7 +403,7 @@ export default function CoverGenerator() {
                   name="company"
                   value={userData.company}
                   onChange={handleInputChange}
-                  placeholder="Founder & CTO | Campoprime Labs"
+                  placeholder={defaultUserData.company}
                   className="border-input/60 focus-visible:ring-primary"
                 />
               </div>
